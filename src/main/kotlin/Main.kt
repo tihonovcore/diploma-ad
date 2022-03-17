@@ -1,7 +1,22 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import com.tihonovcore.diploma.ad.Environment
+import com.tihonovcore.diploma.ad.model.CompilationResult
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+/*
+TODO:
+ кажется разумнее отдавать компилятору сразу пачку файлов - сэкономит время
+ */
+fun main() {
+    val environment = Environment()
+
+    for (file in environment.files) {
+        val fileCompilationResults = mutableListOf<CompilationResult>()
+        for (compiler in environment.compilers) {
+            fileCompilationResults += compiler.compile(file)
+        }
+
+        for (alert in environment.alerts) {
+            val anomalies = alert.check(fileCompilationResults)
+            anomalies.forEach { anomaly -> environment.registerAnomaly(anomaly) }
+        }
+    }
 }
