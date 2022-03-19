@@ -13,8 +13,9 @@ fun main() {
 
         val fileCompilationResults = mutableListOf<CompilationResult>()
         for (compiler in environment.compilers) {
-            println("COMPILE WITH ${compiler.version}")
+            print("COMPILE WITH ${compiler.version} ")
             fileCompilationResults += compiler.compile(file)
+            println("IS SUCCESS: " + fileCompilationResults.last().success)
         }
 
         for (alert in environment.alerts) {
