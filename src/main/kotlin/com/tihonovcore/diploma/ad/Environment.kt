@@ -22,13 +22,21 @@ class Environment {
     }
 
     private fun initFiles(): List<File> {
-        //TODO
-        return listOf()
+        return listOf(
+            File("/Users/tihonovcore/diploma/diploma-ad/kotlinFiles/file1.kt"),
+            File("/Users/tihonovcore/diploma/diploma-ad/kotlinFiles/file2.kt"),
+            File("/Users/tihonovcore/diploma/diploma-ad/kotlinFiles/file3.kt"),
+        )
     }
 
-    private fun initCompilers(): List<CompilerConfiguration> = listOf(
-        //TODO
-    )
+    private fun initCompilers(): List<CompilerConfiguration> {
+        val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/compilers"
+        return listOf(
+            CompilerConfiguration("$commonPrefix/kotlinc-1.4.10/bin/kotlinc-jvm"),
+            CompilerConfiguration("$commonPrefix/kotlinc-1.5.31/bin/kotlinc-jvm"),
+            CompilerConfiguration("$commonPrefix/kotlinc-1.6.10/bin/kotlinc-jvm"),
+        )
+    }
 
     private fun initAlerts() = listOf(
         FixedMemoryAlert(5000L, 7500L),
