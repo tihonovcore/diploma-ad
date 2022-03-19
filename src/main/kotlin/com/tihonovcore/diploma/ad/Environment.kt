@@ -22,10 +22,11 @@ class Environment {
     }
 
     private fun initFiles(): List<File> {
+        val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/src/main/resources/kotlinFiles"
         return listOf(
-            File("/Users/tihonovcore/diploma/diploma-ad/kotlinFiles/file1.kt"),
-            File("/Users/tihonovcore/diploma/diploma-ad/kotlinFiles/file2.kt"),
-            File("/Users/tihonovcore/diploma/diploma-ad/kotlinFiles/file3.kt"),
+            File("$commonPrefix/file1.kt"),
+            File("$commonPrefix/file2.kt"),
+            File("$commonPrefix/file3.kt"),
         )
     }
 
@@ -35,7 +36,7 @@ class Environment {
      * TODO: после добавления профилировщика придется пересобирать компиляторы
      */
     private fun initCompilers(): List<CompilerConfiguration> {
-        val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/compilers"
+        val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/src/main/resources/compilers"
         return listOf(
             CompilerConfiguration("1.4.10", "$commonPrefix/kotlinc-1.4.10/bin/kotlinc-jvm"),
             CompilerConfiguration("1.5.31", "$commonPrefix/kotlinc-1.5.31/bin/kotlinc-jvm"),
