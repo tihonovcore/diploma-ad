@@ -9,6 +9,7 @@ class CompilerConfiguration(
 ) {
     fun compile(file: File): CompilationResult {
         val beginTime = System.currentTimeMillis()
+        //TODO: надо указывать путь для откомпилированного кода
         val process = ProcessBuilder(pathToKotlincJvmFile, file.absolutePath).start()
         val output = process.inputStream.reader(Charsets.UTF_8).use {
             it.readText()

@@ -29,6 +29,11 @@ class Environment {
         )
     }
 
+    /**
+     * Компиляторы берутся отсюда * https://github.com/JetBrains/kotlin/releases?
+     *
+     * TODO: после добавления профилировщика придется пересобирать компиляторы
+     */
     private fun initCompilers(): List<CompilerConfiguration> {
         val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/compilers"
         return listOf(
@@ -39,7 +44,7 @@ class Environment {
     }
 
     private fun initAlerts() = listOf(
-        FixedMemoryAlert(5000L, 7500L),
-        FixedTimeAlert(100L, 200L)
+//        FixedMemoryAlert(5000L, 7500L),
+        FixedTimeAlert(1500L, 1900L)
     )
 }
