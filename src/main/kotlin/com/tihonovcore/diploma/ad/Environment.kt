@@ -32,9 +32,9 @@ class Environment {
     private fun initCompilers(): List<CompilerConfiguration> {
         val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/compilers"
         return listOf(
-            CompilerConfiguration("$commonPrefix/kotlinc-1.4.10/bin/kotlinc-jvm"),
-            CompilerConfiguration("$commonPrefix/kotlinc-1.5.31/bin/kotlinc-jvm"),
-            CompilerConfiguration("$commonPrefix/kotlinc-1.6.10/bin/kotlinc-jvm"),
+            CompilerConfiguration("1.4.10", "$commonPrefix/kotlinc-1.4.10/bin/kotlinc-jvm"),
+            CompilerConfiguration("1.5.31", "$commonPrefix/kotlinc-1.5.31/bin/kotlinc-jvm"),
+            CompilerConfiguration("1.6.10", "$commonPrefix/kotlinc-1.6.10/bin/kotlinc-jvm"),
         )
     }
 

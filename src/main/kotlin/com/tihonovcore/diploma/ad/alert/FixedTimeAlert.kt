@@ -7,12 +7,16 @@ class FixedTimeAlert(val lowerBound: Long, val upperBound: Long) : Alert {
     override fun check(compilationResults: List<CompilationResult>): List<Anomaly> {
         val anomalies = mutableListOf<Anomaly>()
         for (compilationResult in compilationResults) {
-            if (compilationResult.usedTime < lowerBound) {
-                anomalies += Anomaly(compilationResult, "compilationResult.usedTime < lowerBound", this)
+            val usedTime = compilationResult.usedTime
+
+            if (usedTime < lowerBound) {
+                val alertMessage = "compilationResult.usedTime($usedTime) < lowerBound($lowerBound)"
+                anomalies += Anomaly(compilationResult, alertMessage, this)
             }
 
-            if (compilationResult.usedTime > upperBound) {
-                anomalies += Anomaly(compilationResult, "compilationResult.usedTime > upperBound", this)
+            if (usedTime > upperBound) {
+                val alertMessage = "compilationResult.usedTime($usedTime) > upperBound($upperBound)"
+                anomalies += Anomaly(compilationResult, alertMessage, this)
             }
         }
 

@@ -3,6 +3,7 @@ package com.tihonovcore.diploma.ad.model
 import java.io.File
 
 class CompilerConfiguration(
+    val version: String,
     //TODO: use jar
     val pathToKotlincJvmFile: String
 ) {

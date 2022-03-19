@@ -4,10 +4,10 @@ import com.tihonovcore.diploma.ad.alert.Alert
 
 data class Anomaly(
     val compilationResult: CompilationResult,
-    val message: String,
+    val alertMessage: String,
     val alert: Alert
 ) {
     override fun toString(): String {
-        return "${alert.javaClass.name}: $message"
+        return "${alert.javaClass.name}: $alertMessage"
     }
 }
