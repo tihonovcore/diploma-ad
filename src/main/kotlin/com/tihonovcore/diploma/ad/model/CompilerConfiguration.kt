@@ -1,5 +1,6 @@
 package com.tihonovcore.diploma.ad.model
 
+import com.tihonovcore.diploma.ad.AdConfiguration.compilationOutputPath
 import java.io.File
 
 class CompilerConfiguration(
@@ -9,8 +10,11 @@ class CompilerConfiguration(
 ) {
     fun compile(file: File): CompilationResult {
         val beginTime = System.currentTimeMillis()
-        //TODO: надо указывать путь для откомпилированного кода
-        val process = ProcessBuilder(pathToKotlincJvmFile, file.absolutePath).start()
+
+        val pathToOutputJar = "$compilationOutputPath/kotlinc-$version/${file.name}.jar"
+        File(pathToOutputJar).parentFile.mkdirs()
+
+        val process = ProcessBuilder(pathToKotlincJvmFile, file.absolutePath, "-d", pathToOutputJar).start()
         val output = process.inputStream.reader(Charsets.UTF_8).use {
             it.readText()
         }
