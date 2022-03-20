@@ -12,13 +12,16 @@ class Environment {
     val compilers: List<CompilerConfiguration> = initCompilers()
     val alerts: List<Alert> = initAlerts()
 
-    val anomalies: MutableMap<File, Pair<CompilerConfiguration, Alert>> = mutableMapOf()
+    val anomalies: MutableMap<CompilerConfiguration, MutableList<Anomaly>> = mutableMapOf()
 
     fun registerAnomaly(anomaly: Anomaly) {
-        val file = anomaly.compilationResult.file
         val compilerConfiguration = anomaly.compilationResult.compilerConfiguration
+        anomalyList(compilerConfiguration) += anomaly
+    }
 
-        anomalies[file] = Pair(compilerConfiguration, anomaly.alert)
+    private fun anomalyList(compilerConfiguration: CompilerConfiguration): MutableList<Anomaly> {
+        anomalies.putIfAbsent(compilerConfiguration, mutableListOf())
+        return anomalies[compilerConfiguration]!!
     }
 
     private fun initFiles(): List<File> {

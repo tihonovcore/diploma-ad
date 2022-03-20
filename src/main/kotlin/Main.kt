@@ -1,5 +1,6 @@
 import com.tihonovcore.diploma.ad.Environment
 import com.tihonovcore.diploma.ad.model.CompilationResult
+import com.tihonovcore.diploma.ad.site.generateSite
 
 /*
 TODO:
@@ -37,4 +38,6 @@ fun main() {
         println()
         println()
     }
+
+    generateSite(environment.anomalies)
 }
