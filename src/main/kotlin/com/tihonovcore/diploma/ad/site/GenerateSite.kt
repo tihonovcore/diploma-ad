@@ -9,16 +9,16 @@ fun generateSite(anomalies: List<Anomaly>) {
 
     val anomalyList = anomalies.mapIndexed { index, anomaly ->
         """
-            <div>
+            <div class="alert">
                 <a href="anomaly_$index.html">
-                    ${anomaly.alertMessage}
-                </a>    
+                    ${index + 1}. ${anomaly.alert.javaClass.simpleName} 
+                </a>
             </div>
         """.trimIndent()
     }.joinToString(separator = System.lineSeparator())
 
     anomalies.forEachIndexed { index, anomaly ->
-        val alertMessage = "<h2>GOT ALERT '${anomaly.alert.javaClass.simpleName}': ${anomaly.alertMessage}</h2>"
+        val alertMessage = "<h2 style=\"padding: 0% 2%\">GOT ALERT '${anomaly.alert.javaClass.simpleName}': ${anomaly.alertMessage}</h2>"
 
         //TODO: get file simpler
         val sourceCode = "<pre><code>${anomaly.compilationResults.first().file.readText()}</code></pre>"
@@ -27,9 +27,15 @@ fun generateSite(anomalies: List<Anomaly>) {
             val status = if (compilationResult.success) "succ" else "fail"
             """
                 <div>
-                    <div class="column $status" style="width: 80%">kotlinc-${compilationResult.compilerConfiguration.version}</div>                    
-                    <div class="column $status" style="width: 20%">${compilationResult.usedTime}ms</div>
-                    <div class="column $status" style="width: 100%">OUTPUT: ${compilationResult.output}</div>
+                    <div class="column $status" style="width: 78%; padding: 1%">
+                        kotlinc-${compilationResult.compilerConfiguration.version}
+                    </div>                    
+                    <div class="column $status" style="width: 18%; padding: 1%">
+                        ${compilationResult.usedTime}ms
+                    </div>
+                    <div class="column $status" style="width: 98%; padding: 1%">
+                        OUTPUT: ${compilationResult.output}
+                    </div>
                 </div>
             """.trimIndent()
         }.joinToString(separator = System.lineSeparator())
@@ -75,6 +81,15 @@ private fun page(
                 .fail {
                     background-color: indianred;
                 }
+                
+                .code {
+                    background-color: #F1F2F2;
+                    padding: 1% 2%;
+                }
+                
+                .alert {
+                    padding: 2%;
+                }
             </style>
         </head>
         <body>
@@ -85,7 +100,7 @@ private fun page(
                     <div class="column" style="width: 100%">
                         $alertMessage
                     </div>
-                    <div class="column" style="width: 37.5%">
+                    <div class="column code" style="width: 33.5%">
                         $sourceCode
                     </div>
                     <div class="column" style="width: 62.5%">
