@@ -39,5 +39,8 @@ fun main() {
         println()
     }
 
-    generateSite(environment.anomalies)
+    generateSite(
+        environment.anomaliesByCompilerConfiguration,
+        environment.anomalies
+    )
 }
