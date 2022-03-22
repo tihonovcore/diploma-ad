@@ -43,21 +43,35 @@ fun generateSite(map: MutableMap<CompilerConfiguration, MutableList<Anomaly>>) {
 fun createAnomaliesPages(map: MutableMap<CompilerConfiguration, MutableList<Anomaly>>) {
     map.toList().forEachIndexed { configurationIndex, (_, anomalies) ->
         anomalies.forEachIndexed { anomalyIndex, anomaly ->
-            val body = with(StringBuilder()) {
+            val body = StringBuilder().apply {
                 append("<a href=\"index.html\">Config2Anomalies</a>")
                 append("<h2>GOT ALERT '${anomaly.alert.javaClass.simpleName}': ${anomaly.alertMessage}</h2>")
-                append("<h4>WHILE COMPILING</h4> '${anomaly.compilationResult.file}' <h4>WITH kotlinc-${anomaly.compilationResult.compilerConfiguration.version}</h4>")
-                val code = anomaly.compilationResult.file.readText()
-                append("<pre><code>$code</code></pre>")
+                append("<h4>WHILE COMPILING</h4> '${anomaly.compilationResults.first().file}'")
 
-                if (anomaly.compilationResult.success) {
-                    append("<h4>COMPILATION SUCCESS, SPENT ${anomaly.compilationResult.usedTime}ms</h4>")
-                } else {
-                    append("<h4>COMPILATION FAILED</b4>")
+                anomaly.compilationResults.forEach { compilationResult ->
+                    val onHoverStyle = """
+                        style="background: #FFFFFF; padding: 10px;"
+                        onmouseover="this.style.backgroundColor='#F9DC5C';" 
+                        onmouseout="this.style.backgroundColor='#FFFFFF';"
+                    """.trimIndent()
+
+                    append("<div $onHoverStyle>")
+
+                    append("<h4>COMPILER kotlinc-${compilationResult.compilerConfiguration.version}</h4>")
+                    val code = compilationResult.file.readText()
+                    append("<pre><code>$code</code></pre>")
+
+                    if (compilationResult.success) {
+                        append("<h4>COMPILATION SUCCESS, SPENT ${compilationResult.usedTime}ms</h4>")
+                    } else {
+                        append("<h4>COMPILATION FAILED</b4>")
+                    }
+
+                    append("<h4>OUTPUT</h4>")
+                    append(compilationResult.output)
+
+                    append("</div>")
                 }
-
-                append("<h4>OUTPUT</h4>")
-                append(anomaly.compilationResult.output)
             }
 
             val page = page(body.toString())
@@ -70,7 +84,7 @@ fun createAnomaliesPages(map: MutableMap<CompilerConfiguration, MutableList<Anom
     }
 }
 
-private fun page(body: String): String {
+private fun  page(body: String): String {
     return """
         <html>
         <head>

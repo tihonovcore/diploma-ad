@@ -8,11 +8,11 @@ class FixedMemoryAlert(val lowerBound: Long, val upperBound: Long) : Alert {
         val anomalies = mutableListOf<Anomaly>()
         for (compilationResult in compilationResults) {
             if (compilationResult.usedMemory < lowerBound) {
-                anomalies += Anomaly(compilationResult, "compilationResult.usedMemory < lowerBound", this)
+                anomalies += Anomaly(listOf(compilationResult), "compilationResult.usedMemory < lowerBound", this)
             }
 
             if (compilationResult.usedMemory > upperBound) {
-                anomalies += Anomaly(compilationResult, "compilationResult.usedMemory > upperBound", this)
+                anomalies += Anomaly(listOf(compilationResult), "compilationResult.usedMemory > upperBound", this)
             }
         }
 

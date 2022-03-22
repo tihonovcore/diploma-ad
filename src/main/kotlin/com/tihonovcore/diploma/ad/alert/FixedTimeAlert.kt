@@ -11,12 +11,12 @@ class FixedTimeAlert(val lowerBound: Long, val upperBound: Long) : Alert {
 
             if (usedTime < lowerBound) {
                 val alertMessage = "compilationResult.usedTime($usedTime) < lowerBound($lowerBound)"
-                anomalies += Anomaly(compilationResult, alertMessage, this)
+                anomalies += Anomaly(listOf(compilationResult), alertMessage, this)
             }
 
             if (usedTime > upperBound) {
                 val alertMessage = "compilationResult.usedTime($usedTime) > upperBound($upperBound)"
-                anomalies += Anomaly(compilationResult, alertMessage, this)
+                anomalies += Anomaly(listOf(compilationResult), alertMessage, this)
             }
         }
 

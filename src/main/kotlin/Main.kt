@@ -22,14 +22,14 @@ fun main() {
         for (alert in environment.alerts) {
             val anomalies = alert.check(fileCompilationResults)
             anomalies.forEach { anomaly ->
-                val compilerVersion = anomaly.compilationResult.compilerConfiguration.version
-                val isCompilationSuccess = anomaly.compilationResult.success
+//                val compilerVersion = anomaly.compilationResults.compilerConfiguration.version
+//                val isCompilationSuccess = anomaly.compilationResults.success
 
-                println("!!!ALERT!!!: ${anomaly.alert.javaClass.name}")
-                println("ALERT MESSAGE: ${anomaly.alertMessage}")
-                println("COMPILATION WITH $compilerVersion IS SUCCESS: $isCompilationSuccess")
-                println("COMPILER OUTPUT:")
-                println(anomaly.compilationResult.output)
+//                println("!!!ALERT!!!: ${anomaly.alert.javaClass.name}")
+//                println("ALERT MESSAGE: ${anomaly.alertMessage}")
+//                println("COMPILATION WITH $compilerVersion IS SUCCESS: $isCompilationSuccess")
+//                println("COMPILER OUTPUT:")
+//                println(anomaly.compilationResults.output)
 
                 environment.registerAnomaly(anomaly)
             }

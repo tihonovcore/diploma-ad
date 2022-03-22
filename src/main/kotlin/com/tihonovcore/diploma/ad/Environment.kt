@@ -3,7 +3,6 @@ package com.tihonovcore.diploma.ad
 import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import com.tihonovcore.diploma.ad.alert.Alert
-import com.tihonovcore.diploma.ad.alert.FixedMemoryAlert
 import com.tihonovcore.diploma.ad.alert.FixedTimeAlert
 import java.io.File
 
@@ -15,8 +14,9 @@ class Environment {
     val anomalies: MutableMap<CompilerConfiguration, MutableList<Anomaly>> = mutableMapOf()
 
     fun registerAnomaly(anomaly: Anomaly) {
-        val compilerConfiguration = anomaly.compilationResult.compilerConfiguration
-        anomalyList(compilerConfiguration) += anomaly
+        for (compilationResult in anomaly.compilationResults) {
+            anomalyList(compilationResult.compilerConfiguration) += anomaly
+        }
     }
 
     private fun anomalyList(compilerConfiguration: CompilerConfiguration): MutableList<Anomaly> {
