@@ -11,6 +11,11 @@ class CompilerConfiguration(
     fun compile(file: File): CompilationResult {
         val beginTime = System.currentTimeMillis()
 
+        /*
+        TODO: если в ad-output есть и jar, и CompilationResult, то просто прочитать
+              CompilationResult и закончить метод.
+         */
+
         val pathToOutputJar = "$compilationOutputPath/kotlinc-$version/${file.name}.jar"
         File(pathToOutputJar).parentFile.mkdirs()
 
@@ -23,6 +28,7 @@ class CompilerConfiguration(
 
         val success = process.waitFor() == 0
 
+        //TODO: сохранять CompilationResult в ad-output
         return CompilationResult(
             compilerConfiguration = this,
             file,

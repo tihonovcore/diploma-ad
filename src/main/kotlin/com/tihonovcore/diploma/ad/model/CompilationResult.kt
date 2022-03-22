@@ -22,5 +22,5 @@ data class CompilationResult(
     val success: Boolean,
     val usedTime: Long,
     val usedMemory: Long,
-    val output: String
+    val output: String //TODO: разделить на out и err
 )
