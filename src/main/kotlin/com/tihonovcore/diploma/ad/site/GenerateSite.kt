@@ -1,6 +1,7 @@
 package com.tihonovcore.diploma.ad.site
 
 import com.tihonovcore.diploma.ad.AdConfiguration
+import com.tihonovcore.diploma.ad.AdConfiguration.siteOutputPath
 import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import java.io.File
@@ -10,6 +11,8 @@ import java.io.File
 //TODO: рендерить красивее
 
 fun generateSite(map: MutableMap<CompilerConfiguration, MutableList<Anomaly>>) {
+    File(siteOutputPath).deleteRecursively()
+
     val body = StringBuilder()
     body.append("<table>")
     map.toList().forEachIndexed { configurationIndex, (compilerConfiguration, anomalies) ->
@@ -31,7 +34,7 @@ fun generateSite(map: MutableMap<CompilerConfiguration, MutableList<Anomaly>>) {
     body.append("</table>")
 
     val page = page(body.toString())
-    val indexHtmlFile = File("${AdConfiguration.siteOutputPath}/index.html")
+    val indexHtmlFile = File("$siteOutputPath/index.html")
     indexHtmlFile.parentFile.mkdirs()
     indexHtmlFile.createNewFile()
 
@@ -41,6 +44,12 @@ fun generateSite(map: MutableMap<CompilerConfiguration, MutableList<Anomaly>>) {
 }
 
 fun createAnomaliesPages(map: MutableMap<CompilerConfiguration, MutableList<Anomaly>>) {
+    /*
+        TODO: так как одна аномалия может встречаться для нескольких конфигураций
+         то нужна глобальная нумерация аномалий, инчае страницы будут создаваться
+         с косой нумерацией
+     */
+
     map.toList().forEachIndexed { configurationIndex, (_, anomalies) ->
         anomalies.forEachIndexed { anomalyIndex, anomaly ->
             val body = StringBuilder().apply {
