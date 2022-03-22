@@ -3,6 +3,7 @@ package com.tihonovcore.diploma.ad
 import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import com.tihonovcore.diploma.ad.alert.Alert
+import com.tihonovcore.diploma.ad.alert.CompareCompilationSuccessAlert
 import com.tihonovcore.diploma.ad.alert.FixedTimeAlert
 import java.io.File
 
@@ -31,7 +32,7 @@ class Environment {
     /**
      * Компиляторы берутся отсюда * https://github.com/JetBrains/kotlin/releases?
      *
-     * TODO: после добавления профилировщика придется пересобирать компиляторы
+     * TODO: после добавления профилировщика возможно придется пересобирать компиляторы
      */
     private fun initCompilers(): List<CompilerConfiguration> {
         val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/src/main/resources/compilers"
@@ -43,6 +44,7 @@ class Environment {
     }
 
     private fun initAlerts() = listOf(
+        CompareCompilationSuccessAlert(),
 //        FixedMemoryAlert(5000L, 7500L),
         FixedTimeAlert(1500L, 1900L)
     )
