@@ -2,94 +2,59 @@ package com.tihonovcore.diploma.ad.site
 
 import com.tihonovcore.diploma.ad.AdConfiguration.siteOutputPath
 import com.tihonovcore.diploma.ad.model.Anomaly
-import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import java.io.File
 
-//TODO: реализована группировка по конфигурации, добавить группировку по аномалии, по файлу
-
-//TODO: рендерить красивее
-
-fun generateSite(
-    anomaliesByCompilerConfiguration: Map<CompilerConfiguration, MutableList<Anomaly>>,
-    anomalies: List<Anomaly>
-) {
+fun generateSite(anomalies: List<Anomaly>) {
     File(siteOutputPath).deleteRecursively()
 
-    val body = StringBuilder()
-    body.append("<table>")
-    anomaliesByCompilerConfiguration.toList().forEach { (compilerConfiguration, anomalies) ->
-        body.append("<tr>")
-        body.append("<td rowspan=${anomalies.size + 1}>") //TODO: why +1?)))
-        body.append(compilerConfiguration.version)
-        body.append("</td>")
-        body.append("</tr>")
-        anomalies.forEach { anomaly ->
-            body.append("<tr>")
-            body.append("<td>")
+    val anomalyList = anomalies.mapIndexed { index, anomaly ->
+        """
+            <div>
+                <a href="anomaly_$index.html">
+                    ${anomaly.alertMessage}
+                </a>    
+            </div>
+        """.trimIndent()
+    }.joinToString(separator = System.lineSeparator())
 
-            val anomalyIndex = anomalies.indexOf(anomaly)
-            body.append("<a href=\"anomaly_$anomalyIndex.html\">")
-            body.append(anomaly.alertMessage)
-            body.append("</a>")
-            body.append("</td>")
-            body.append("</tr>")
-        }
-    }
-    body.append("</table>")
-
-    val page = page(body.toString())
-    val indexHtmlFile = File("$siteOutputPath/index.html")
-    indexHtmlFile.parentFile.mkdirs()
-    indexHtmlFile.createNewFile()
-
-    indexHtmlFile.writeText(page)
-
-    createAnomaliesPages(anomalies)
-}
-
-fun createAnomaliesPages(anomalies: List<Anomaly>) {
     anomalies.forEachIndexed { index, anomaly ->
-        val body = StringBuilder().apply {
-            append("<a href=\"index.html\">Config2Anomalies</a>")
-            append("<h2>GOT ALERT '${anomaly.alert.javaClass.simpleName}': ${anomaly.alertMessage}</h2>")
-            append("<h4>WHILE COMPILING</h4> '${anomaly.compilationResults.first().file}'")
+        val alertMessage = "<h2>GOT ALERT '${anomaly.alert.javaClass.simpleName}': ${anomaly.alertMessage}</h2>"
 
-            anomaly.compilationResults.forEach { compilationResult ->
-                val onHoverStyle = """
-                    style="background: #FFFFFF; padding: 10px;"
-                    onmouseover="this.style.backgroundColor='#F9DC5C';" 
-                    onmouseout="this.style.backgroundColor='#FFFFFF';"
-                """.trimIndent()
+        //TODO: get file simpler
+        val sourceCode = "<pre><code>${anomaly.compilationResults.first().file.readText()}</code></pre>"
 
-                append("<div $onHoverStyle>")
+        val compilationResults = anomaly.compilationResults.map { compilationResult ->
+            val status = if (compilationResult.success) "succ" else "fail"
+            """
+                <div>
+                    <div class="column $status" style="width: 80%">kotlinc-${compilationResult.compilerConfiguration.version}</div>                    
+                    <div class="column $status" style="width: 20%">${compilationResult.usedTime}ms</div>
+                    <div class="column $status" style="width: 100%">OUTPUT: ${compilationResult.output}</div>
+                </div>
+            """.trimIndent()
+        }.joinToString(separator = System.lineSeparator())
 
-                append("<h4>COMPILER kotlinc-${compilationResult.compilerConfiguration.version}</h4>")
-                val code = compilationResult.file.readText()
-                append("<pre><code>$code</code></pre>")
+        val page = page(
+            anomalyList,
+            alertMessage,
+            sourceCode,
+            compilationResults
+        )
 
-                if (compilationResult.success) {
-                    append("<h4>COMPILATION SUCCESS, SPENT ${compilationResult.usedTime}ms</h4>")
-                } else {
-                    append("<h4>COMPILATION FAILED</b4>")
-                }
+        val indexHtmlFile = File("$siteOutputPath/anomaly_$index.html")
+        indexHtmlFile.parentFile.mkdirs()
+        indexHtmlFile.createNewFile()
 
-                append("<h4>OUTPUT</h4>")
-                append(compilationResult.output)
-
-                append("</div>")
-            }
-        }
-
-        val page = page(body.toString())
-        val anomalyFile = File("$siteOutputPath/anomaly_$index.html")
-        anomalyFile.parentFile.mkdirs()
-        anomalyFile.createNewFile()
-
-        anomalyFile.writeText(page)
+        indexHtmlFile.writeText(page)
     }
 }
 
-private fun  page(body: String): String {
+private fun page(
+    anomalyList: String,
+    alertMessage: String,
+    sourceCode: String,
+    compilationResults: String
+): String {
     return """
         <html>
         <head>
@@ -98,10 +63,36 @@ private fun  page(body: String): String {
                     border: 1px solid black;
                     border-collapse: collapse;
                 }
+                
+                .column {
+                    float: left;
+                }
+                
+                .succ {
+                    background-color: darkseagreen;
+                }
+
+                .fail {
+                    background-color: indianred;
+                }
             </style>
         </head>
         <body>
-        $body
+            <div class="column" style="width: 20%">
+                $anomalyList
+            </div>
+                <div class="column" style="width: 80%">
+                    <div class="column" style="width: 100%">
+                        $alertMessage
+                    </div>
+                    <div class="column" style="width: 37.5%">
+                        $sourceCode
+                    </div>
+                    <div class="column" style="width: 62.5%">
+                        $compilationResults
+                    </div>
+                </div>
+            </div>
         </body>
         </html>
     """.trimIndent()

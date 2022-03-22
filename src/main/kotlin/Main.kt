@@ -5,6 +5,10 @@ import com.tihonovcore.diploma.ad.site.generateSite
 /*
 TODO:
  кажется разумнее отдавать компилятору сразу пачку файлов - сэкономит время
+
+TODO:
+ сохранять результаты компиляции и перекомпилировать только новые файлы
+ + добавить возмонжость чистить результаты компиляции
  */
 fun main() {
     val environment = Environment()
@@ -39,8 +43,5 @@ fun main() {
         println()
     }
 
-    generateSite(
-        environment.anomaliesByCompilerConfiguration,
-        environment.anomalies
-    )
+    generateSite(environment.anomalies)
 }
