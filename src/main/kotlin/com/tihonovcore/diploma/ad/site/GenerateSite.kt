@@ -9,7 +9,7 @@ fun generateSite(anomalies: List<Anomaly>) {
 
     val anomalyList = anomalies.mapIndexed { index, anomaly ->
         """
-            <div class="alert">
+            <div class="alert anomaly_$index">
                 <a href="anomaly_$index.html">
                     ${index + 1}. ${anomaly.alert.javaClass.simpleName} 
                 </a>
@@ -44,7 +44,8 @@ fun generateSite(anomalies: List<Anomaly>) {
             anomalyList,
             alertMessage,
             sourceCode,
-            compilationResults
+            compilationResults,
+            index
         )
 
         val indexHtmlFile = File("$siteOutputPath/anomaly_$index.html")
@@ -59,7 +60,8 @@ private fun page(
     anomalyList: String,
     alertMessage: String,
     sourceCode: String,
-    compilationResults: String
+    compilationResults: String,
+    pageIndex: Int
 ): String {
     return """
         <html>
@@ -83,16 +85,16 @@ private fun page(
                 }
                 
                 .compiler {
-                    border-top-left-radius: 15px;
+                    border-top-left-radius: 10px;
                 }
                 
                 .time {
-                    border-top-right-radius: 15px;
+                    border-top-right-radius: 10px;
                 }
                 
                 .output {
-                    border-bottom-left-radius: 15px;
-                    border-bottom-right-radius: 15px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
                     margin-bottom: 5px;
                 }
                 
@@ -103,6 +105,10 @@ private fun page(
                 
                 .alert {
                     padding: 2%;
+                }
+                
+                .anomaly_$pageIndex {
+                    background-color: #B7D4FF;
                 }
             </style>
         </head>
