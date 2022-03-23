@@ -33,8 +33,11 @@ fun generateSite(anomalies: List<Anomaly>) {
                     <div class="column $status time" style="width: 18%; padding: 1%">
                         ${compilationResult.usedTime}ms
                     </div>
-                    <div class="column $status output" style="width: 98%; padding: 1%">
+                    <div class="column $status" style="width: 98%; padding: 1%">
                         OUTPUT: ${compilationResult.output}
+                    </div>
+                    <div class="column $status output" style="width: 98%; padding: 1%">
+                        ERROR OUTPUT: ${compilationResult.errorOutput}
                     </div>
                 </div>
             """.trimIndent()

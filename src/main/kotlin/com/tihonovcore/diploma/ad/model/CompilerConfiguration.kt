@@ -35,7 +35,8 @@ class CompilerConfiguration(
             success,
             System.currentTimeMillis() - beginTime,
             100,
-            output + errorOutput
+            output,
+            errorOutput
         )
     }
 }
