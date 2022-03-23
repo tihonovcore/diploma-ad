@@ -18,8 +18,16 @@ fun main() {
 
         val fileCompilationResults = mutableListOf<CompilationResult>()
         for (compiler in environment.compilers) {
+            val cachedCompilationResult = environment.findCompilationResult(file, compiler)
+            if (cachedCompilationResult != null) {
+                fileCompilationResults += cachedCompilationResult
+                continue
+            }
+
             print("COMPILE WITH ${compiler.version} ")
-            fileCompilationResults += compiler.compile(file)
+            val compilationResult = compiler.compile(file)
+            fileCompilationResults += compilationResult
+            environment.saveCompilationResult(compilationResult)
             println("IS SUCCESS: " + fileCompilationResults.last().success)
         }
 

@@ -1,10 +1,12 @@
 package com.tihonovcore.diploma.ad
 
+import com.google.gson.Gson
 import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import com.tihonovcore.diploma.ad.alert.Alert
 import com.tihonovcore.diploma.ad.alert.CompareCompilationSuccessAlert
 import com.tihonovcore.diploma.ad.alert.FixedTimeAlert
+import com.tihonovcore.diploma.ad.model.CompilationResult
 import java.io.File
 
 class Environment {
@@ -48,4 +50,28 @@ class Environment {
 //        FixedMemoryAlert(5000L, 7500L),
         FixedTimeAlert(1500L, 1900L)
     )
+
+    fun findCompilationResult(file: File, compilerConfiguration: CompilerConfiguration): CompilationResult? {
+        val fileName = getCompilationResultId(file, compilerConfiguration)
+        val compilationResultFile = File(AdConfiguration.compilationResultOutputPath + "/$fileName.json")
+        if (!compilationResultFile.exists()) {
+            return null
+        }
+
+        return Gson().fromJson(compilationResultFile.readText(), CompilationResult::class.java)
+    }
+
+    fun saveCompilationResult(compilationResult: CompilationResult) {
+        val fileName = getCompilationResultId(compilationResult.file, compilationResult.compilerConfiguration)
+        val file = File(AdConfiguration.compilationResultOutputPath + "/$fileName.json")
+        file.parentFile.mkdirs()
+        file.createNewFile()
+
+        val json = Gson().toJson(compilationResult)
+        file.writeText(json)
+    }
+
+    private fun getCompilationResultId(file: File, compilerConfiguration: CompilerConfiguration): String {
+        return file.name + "__kotlinc-" + compilerConfiguration.version
+    }
 }
