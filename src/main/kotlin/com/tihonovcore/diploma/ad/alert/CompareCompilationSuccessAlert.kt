@@ -10,7 +10,7 @@ class CompareCompilationSuccessAlert : Alert {
         }
 
         return listOf(
-            Anomaly(compilationResults, "Some compilations are success, but some not", this)
+            Anomaly(compilationResults, "Some compilations are success, but some aren't", this)
         )
     }
 }

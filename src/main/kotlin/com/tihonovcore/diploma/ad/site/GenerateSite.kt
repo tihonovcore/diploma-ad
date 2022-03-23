@@ -27,13 +27,13 @@ fun generateSite(anomalies: List<Anomaly>) {
             val status = if (compilationResult.success) "succ" else "fail"
             """
                 <div>
-                    <div class="column $status" style="width: 78%; padding: 1%">
+                    <div class="column $status compiler" style="width: 78%; padding: 1%">
                         kotlinc-${compilationResult.compilerConfiguration.version}
                     </div>                    
-                    <div class="column $status" style="width: 18%; padding: 1%">
+                    <div class="column $status time" style="width: 18%; padding: 1%">
                         ${compilationResult.usedTime}ms
                     </div>
-                    <div class="column $status" style="width: 98%; padding: 1%">
+                    <div class="column $status output" style="width: 98%; padding: 1%">
                         OUTPUT: ${compilationResult.output}
                     </div>
                 </div>
@@ -80,6 +80,20 @@ private fun page(
 
                 .fail {
                     background-color: indianred;
+                }
+                
+                .compiler {
+                    border-top-left-radius: 15px;
+                }
+                
+                .time {
+                    border-top-right-radius: 15px;
+                }
+                
+                .output {
+                    border-bottom-left-radius: 15px;
+                    border-bottom-right-radius: 15px;
+                    margin-bottom: 5px;
                 }
                 
                 .code {
