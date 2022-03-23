@@ -11,17 +11,16 @@ fun generateSite(anomalies: List<Anomaly>) {
         """
             <div class="alert anomaly_$index">
                 <a href="anomaly_$index.html">
-                    ${index + 1}. ${anomaly.alert.javaClass.simpleName} 
+                    ${index + 1}. ${anomaly.alertName} 
                 </a>
             </div>
         """.trimIndent()
     }.joinToString(separator = System.lineSeparator())
 
     anomalies.forEachIndexed { index, anomaly ->
-        val alertMessage = "<h2 style=\"padding: 0% 2%\">GOT ALERT '${anomaly.alert.javaClass.simpleName}': ${anomaly.alertMessage}</h2>"
+        val alertMessage = "<h2 style=\"padding: 0% 2%\">GOT ALERT '${anomaly.alertName}': ${anomaly.alertMessage}</h2>"
 
-        //TODO: get file simpler
-        val sourceCode = "<pre><code>${anomaly.compilationResults.first().file.readText()}</code></pre>"
+        val sourceCode = "<pre><code>${anomaly.file.readText()}</code></pre>"
 
         val compilationResults = anomaly.compilationResults.map { compilationResult ->
             val status = if (compilationResult.success) "succ" else "fail"

@@ -2,6 +2,7 @@ package com.tihonovcore.diploma.ad.alert
 
 import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilationResult
+import java.io.File
 
 /*
 TODO:
@@ -25,5 +26,5 @@ TODO:
  поддержать EvaluationResult и алерты на сравнение результатов выполнения - время память и аутпут
 */
 interface Alert {
-    fun check(compilationResults: List<CompilationResult>): List<Anomaly>
+    fun check(file: File, compilationResults: List<CompilationResult>): List<Anomaly>
 }

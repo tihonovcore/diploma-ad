@@ -1,13 +1,14 @@
 package com.tihonovcore.diploma.ad.model
 
-import com.tihonovcore.diploma.ad.alert.Alert
+import java.io.File
 
 data class Anomaly(
+    val file: File,
     val compilationResults: List<CompilationResult>,
     val alertMessage: String,
-    val alert: Alert
+    val alertName: String
 ) {
     override fun toString(): String {
-        return "${alert.javaClass.name}: $alertMessage"
+        return "$alertName: $alertMessage"
     }
 }

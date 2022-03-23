@@ -32,7 +32,7 @@ fun main() {
         }
 
         for (alert in environment.alerts) {
-            val anomalies = alert.check(fileCompilationResults)
+            val anomalies = alert.check(file, fileCompilationResults)
             anomalies.forEach { anomaly ->
 //                val compilerVersion = anomaly.compilationResults.compilerConfiguration.version
 //                val isCompilationSuccess = anomaly.compilationResults.success

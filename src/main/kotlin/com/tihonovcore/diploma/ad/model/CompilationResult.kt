@@ -19,10 +19,11 @@ TODO:
 data class CompilationResult(
     val compilerConfiguration: CompilerConfiguration,
     val file: File,
+
     val success: Boolean,
+    val output: String,
+    val errorOutput: String,
+
     val usedTime: Long,
     val usedMemory: Long,
-
-    val output: String,
-    val errorOutput: String
 )
