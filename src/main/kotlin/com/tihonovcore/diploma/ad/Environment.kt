@@ -1,6 +1,8 @@
 package com.tihonovcore.diploma.ad
 
 import com.google.gson.Gson
+import com.tihonovcore.diploma.ad.AdConfiguration.compilersDirectoryPath
+import com.tihonovcore.diploma.ad.AdConfiguration.ktFilesDirectoryPath
 import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import com.tihonovcore.diploma.ad.alert.Alert
@@ -23,12 +25,7 @@ class Environment {
     }
 
     private fun initFiles(): List<File> {
-        val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/src/main/resources/kotlinFiles"
-        return listOf(
-            File("$commonPrefix/file1.kt"),
-            File("$commonPrefix/file2.kt"),
-            File("$commonPrefix/file3.kt"),
-        )
+        return File(ktFilesDirectoryPath).listFiles()?.asList() ?: emptyList()
     }
 
     /**
@@ -37,11 +34,10 @@ class Environment {
      * TODO: после добавления профилировщика возможно придется пересобирать компиляторы
      */
     private fun initCompilers(): List<CompilerConfiguration> {
-        val commonPrefix = "/Users/tihonovcore/diploma/diploma-ad/src/main/resources/compilers"
         return listOf(
-            CompilerConfiguration("1.4.10", "$commonPrefix/kotlinc-1.4.10/bin/kotlinc-jvm"),
-            CompilerConfiguration("1.5.31", "$commonPrefix/kotlinc-1.5.31/bin/kotlinc-jvm"),
-            CompilerConfiguration("1.6.10", "$commonPrefix/kotlinc-1.6.10/bin/kotlinc-jvm"),
+            CompilerConfiguration("1.4.10", "$compilersDirectoryPath/kotlinc-1.4.10/bin/kotlinc-jvm"),
+            CompilerConfiguration("1.5.31", "$compilersDirectoryPath/kotlinc-1.5.31/bin/kotlinc-jvm"),
+            CompilerConfiguration("1.6.10", "$compilersDirectoryPath/kotlinc-1.6.10/bin/kotlinc-jvm"),
         )
     }
 
