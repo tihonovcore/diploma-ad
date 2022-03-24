@@ -7,6 +7,7 @@ import com.tihonovcore.diploma.ad.model.Anomaly
 import com.tihonovcore.diploma.ad.model.CompilerConfiguration
 import com.tihonovcore.diploma.ad.alert.Alert
 import com.tihonovcore.diploma.ad.alert.CompareCompilationSuccessAlert
+import com.tihonovcore.diploma.ad.alert.CompareOutputAlert
 import com.tihonovcore.diploma.ad.alert.FixedTimeAlert
 import com.tihonovcore.diploma.ad.model.CompilationResult
 import java.io.File
@@ -43,6 +44,7 @@ class Environment {
 
     private fun initAlerts() = listOf(
         CompareCompilationSuccessAlert(),
+        CompareOutputAlert(),
 //        FixedMemoryAlert(5000L, 7500L),
         FixedTimeAlert(1500L, 1900L)
     )
